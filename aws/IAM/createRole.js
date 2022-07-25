@@ -1,77 +1,112 @@
-import { iamClient } from "../clients/iamClient.js";
-import { CreateRoleCommand } from "@aws-sdk/client-iam";
+// snippet-start:[lambda.JavaScript.tutorial.LambdaRoleSetUpV3]
+// Import a non-modular IAM client
+import {
+  IAMClient,
+  CreateRoleCommand,
+  AttachRolePolicyCommand
+} from "@aws-sdk/client-iam";
 import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
+import fs from 'fs-extra'
 
-// Set the parameters.
-let params = {
-  AssumeRolePolicyDocument: JSON.stringify({
-    Version: '2012-10-17',
-    Statement: [
-      {
-        Effect: 'Allow',
-        Principal:
-        {
-            'AWS': `${process.env.USER_ARN}` // The ARN of the user.
-        },
-        Action: [
-          'sts:AssumeRole',
-        ],
+
+// Set the AWS Region
+const REGION = `${process.env.REGION}`; //e.g. "us-east-1"
+
+// Instantiate the IAM client
+const iam = new IAMClient({ region: REGION });
+
+// Set the parameters
+const ROLE = "KuriRole"; //NEW_ROLENAME
+const myPolicy = {
+  Version: "2012-10-17",
+  Statement: [
+    {
+      Effect: "Allow",
+      Principal: {
+        Service: "lambda.amazonaws.com",
       },
-    ],
-  }),
-  Path: '/',
-  RoleName: "kurirole"
+      Action: "sts:AssumeRole",
+    },
+  ],
 };
 
-// params = JSON.stringify(params)
+const createParams = {
+  AssumeRolePolicyDocument: JSON.stringify(myPolicy),
+  RoleName: ROLE,
+};
+
+const lambdaPolicyParams = {
+  PolicyArn: "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
+  RoleName: ROLE,
+};
+
+const dynamoPolicyParams = {
+  PolicyArn: "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+  RoleName: ROLE,
+};
+
+const s3PolicyParams = {
+  PolicyArn: "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+  RoleName: ROLE,
+};
+
+const snsPolicyParams = {
+  PolicyArn: "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
+  RoleName: ROLE,
+};
+
+const sqsPolicyParams = {
+  PolicyArn: "arn:aws:iam::aws:policy/AmazonSQSFullAccess",
+  RoleName: ROLE,
+};
 
 const run = async () => {
-    try {
-        const data = await iamClient.send(new CreateRoleCommand(params));
-        console.log("Success. Role created. Role Arn: ", data.Role.RoleName);
-        } catch (err) {
-            console.log("Error", err);
-        }
+  try {
+    const data = await iam.send(new CreateRoleCommand(createParams));
+    console.log("Role ARN is", data.Role.Arn); // successful response
+    fs.appendFile('../../.env', `ROLE_ARN="${data.Role.Arn}"\n`)
+  } catch (err) {
+    console.log("Error when creating role."); // an error occurred
+    throw err;
+  }
+  try {
+    await iam.send(new AttachRolePolicyCommand(lambdaPolicyParams));
+    console.log("AWSLambdaRole policy attached"); // successful response
+  } catch (err) {
+    console.log("Error when attaching Lambda policy to role."); // an error occurred
+    throw err;
+  }
+  try {
+    await iam.send(new AttachRolePolicyCommand(dynamoPolicyParams));
+    console.log("DynamoDB policy attached"); // successful response
+  } catch (err) {
+    console.log("Error when attaching dynamodb policy to role."); // an error occurred
+    throw err;
+  }
+  try {
+    await iam.send(new AttachRolePolicyCommand(s3PolicyParams));
+    console.log("S3 policy attached"); // successful response
+  } catch (err) {
+    console.log("Error when attaching s3 policy to role."); // an error occurred
+    throw err;
+  }
+  try {
+    await iam.send(new AttachRolePolicyCommand(snsPolicyParams));
+    console.log("SNS policy attached"); // successful response
+  } catch (err) {
+    console.log("Error when attaching S3 policy to role."); // an error occurred
+    throw err;
+  }
+  try {
+    await iam.send(new AttachRolePolicyCommand(sqsPolicyParams));
+    console.log("DynamoDB policy attached"); // successful response
+  } catch (err) {
+    console.log("Error when attaching dynamodb policy to role."); // an error occurred
+    throw err;
+  }
 };
+
 run();
-
-///////////////////////////////////////
-
-// // Import required AWS SDK clients and commands for Node.js.
-// import { iamClient } from "./libs/iamClient.js";
-// import { CreateRoleCommand } from "@aws-sdk/client-iam";
-
-// // Sample assume role policy JSON.
-// const role_json = {
-//     Version: "2012-10-17",
-//     Statement: [
-//         {
-//             Effect: "Allow",
-//             Principal: {
-//                 AWS: "USER_ARN", // The ARN of the user.
-//             },
-//             Action: "sts:AssumeRole",
-//         },
-//     ],
-// };
-// // Stringify the assume role policy JSON.
-// const myJson = JSON.stringify(role_json);
-
-// // Set the parameters.
-// const params = {
-//     AssumeRolePolicyDocument: myJson,
-//     Path: "/",
-//     RoleName: "ROLE_NAME"
-// };
-
-// const run = async () => {
-//     try {
-//         const data = await iamClient.send(new CreateRoleCommand(params));
-//         console.log("Success. Role created. Role Arn: ", data.Role.RoleName);
-//         } catch (err) {
-//             console.log("Error", err);
-//         }
-// };
-// run();
+// snippet-end:[lambda.JavaScript.tutorial.LambdaRoleSetUpV3]
 
