@@ -1,4 +1,6 @@
 import { CognitoIdentityProviderClient, AddCustomAttributesCommand } from "@aws-sdk/client-cognito-identity-provider";
+import dotenv from 'dotenv'
+dotenv.config({path:'../../.env'})
 const client = new CognitoIdentityProviderClient({ region: process.env.REGION });
 
 const params = {
