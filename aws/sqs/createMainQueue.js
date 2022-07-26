@@ -11,7 +11,7 @@ export const run = async () => {
   try {
     const mainQueue = await sqsClient.send(new CreateQueueCommand(params));
     console.log("Success", mainQueue);
-    fs.appendFile('../../.env', `MAIN_QUEUE_URL="${mainQueue.QueueUrl}"\n`);         
+    fs.appendFile('../../.env', `MAIN_QUEUE_URL="${mainQueue.QueueUrl}"\nMAIN_QUEUE_NAME="${mainQueue.QueueName}"\n`);
     return mainQueue; // For unit tests.
   } catch (err) {
     console.log("Error", err);
