@@ -1,5 +1,3 @@
-// snippet-start:[lambda.JavaScript.tutorial.LambdaRoleSetUpV3]
-// Import a non-modular IAM client
 import {
   IAMClient,
   CreateRoleCommand,
@@ -9,15 +7,11 @@ import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
 import fs from 'fs-extra'
 
+const REGION = `${process.env.REGION}`;
 
-// Set the AWS Region
-const REGION = `${process.env.REGION}`; //e.g. "us-east-1"
-
-// Instantiate the IAM client
 const iam = new IAMClient({ region: REGION });
 
-// Set the parameters
-const ROLE = "KuriRole"; //NEW_ROLENAME
+const ROLE = "KuriRole";
 const myPolicy = {
   Version: "2012-10-17",
   Statement: [
@@ -108,5 +102,5 @@ const run = async () => {
 };
 
 run();
-// snippet-end:[lambda.JavaScript.tutorial.LambdaRoleSetUpV3]
+
 
