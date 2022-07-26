@@ -1,8 +1,8 @@
-import { CognitoIdentityProvider, CognitoIdentityProviderClient, AddCustomAttributesCommand } from "@aws-sdk/client-cognito-identity-provider";
+import { CognitoIdentityProvider, AmazonCognitoIdentityClient, AddCustomAttributesCommand } from "@aws-sdk/client-cognito-identity-provider";
 import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
-const client = new CognitoIdentityProvider({ region: process.env.REGION });
-console.log(client)
+const client = new AmazonCognitoIdentityClient({ region: process.env.REGION });
+
 const params = {
   UserPoolId: 'arjunrasodha10@gmail.com',
 };
@@ -14,6 +14,8 @@ const run = async() => {
     console.log(data);
   } catch (error) {
     console.log(error)
+  } finally {
+    console.log('USERIDPOOL:', client.UserPoolId())
   }
 }
 run();
