@@ -1,7 +1,5 @@
 const https = require('https');
 const util = require('util');
-import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
 
 const POST_OPTIONS = {
   hostname: 'hooks.slack.com',
