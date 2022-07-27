@@ -13,8 +13,8 @@ const dynamoParams = {
 };
 
 sns.subscribe(dynamoParams, function(err, data) {
-  if (err) console.log(err, err.stack); // an error occurred
-  else     console.log('success', data);           // successful response
+  if (err) console.log(err, err.stack);
+  else     console.log('success', data);
 });
 
 const slackParams = {
@@ -25,18 +25,6 @@ const slackParams = {
 };
 
 sns.subscribe(slackParams, function(err, data) {
-  if (err) console.log(err, err.stack); // an error occurred
-  else     console.log('success', data);           // successful response
+  if (err) console.log(err, err.stack);
+  else     console.log('success', data);
 });
-
-// const slackParams = {
-//   Protocol: 'lambda',
-//   TopicArn: process.env.SNS_ARN,
-//   Endpoint: `arn:aws:lambda:${process.env.REGION}:${getAccountId()}:function:${postToSlackLambda}`,
-//   ReturnSubscriptionArn: true || false
-// };
-
-// sns.subscribe(slackParams, function(err, data) {
-//   if (err) console.log(err, err.stack); // an error occurred
-//   else     console.log('success', data);           // successful response
-// });

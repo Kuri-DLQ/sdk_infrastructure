@@ -3,7 +3,7 @@ const util = require('util');
 
 const POST_OPTIONS = {
   hostname: 'hooks.slack.com',
-  path: 'KURI_SNS_PATH',
+  path: 'KURI_SLACK_PATH',
   method: 'POST',
 };
 
@@ -40,11 +40,7 @@ const reformatAttributes = (attributes) => {
 
 exports.handler = (event, context) => {
   for (const record of event.Records) {
-    // record.Sns.MessageAttributes
     const message = {
-      // text: 'A message has failed to be processed',
-      // attachments: [{
-      // color: '#8697db',
         blocks:[
           {
       			type: "section",
@@ -92,7 +88,6 @@ exports.handler = (event, context) => {
             ]
           },
         ]
-    // }];
     };
 
 

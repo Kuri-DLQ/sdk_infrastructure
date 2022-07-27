@@ -4,8 +4,8 @@ import fs from 'fs-extra'
 import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
 
-export const bucketParams = { Bucket: "kuri-dlq-bucket-tony" };
-fs.appendFile('../../.env', `BUCKET_NAME="kuri-dlq-bucket-tony"\n`)
+export const bucketParams = { Bucket: "kuri-dlq-bucket-arjun" };
+fs.appendFile('../../.env', `BUCKET_NAME="kuri-dlq-bucket-arjun"\n`)
 
 export const run = async () => {
   try {
