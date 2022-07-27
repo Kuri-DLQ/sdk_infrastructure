@@ -1,6 +1,8 @@
 const aws = require('aws-sdk');
+import dotenv from 'dotenv'
+dotenv.config({path:'../../.env'})
 // require('dotenv').config();
-aws.config.update({ region: 'ca-central-1'})
+aws.config.update({ region: process.env.REGION })
 const dynamodb = new aws.DynamoDB();
 
 const handleAttributeType = (attributes) => {

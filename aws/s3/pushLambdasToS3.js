@@ -14,17 +14,17 @@ const postToSlackFileStream = fs.createReadStream(postToSlack);
 
 export const uploadParams = [
   {
-    Bucket: "kuri-dlq-bucket-tony", // need to change to unique bucket name per person
+    Bucket: "kuri-dlq-bucket-arjun", // need to change to unique bucket name per person
     Key: path.basename(publishLambda),
     Body: pusblishLambdaFileStream,
   },
   {
-    Bucket: "kuri-dlq-bucket-tony",
+    Bucket: "kuri-dlq-bucket-arjun",
     Key: path.basename(writeToDynamo),
     Body: writeToDynamoFileStream,
   },
   {
-    Bucket: "kuri-dlq-bucket-tony",
+    Bucket: "kuri-dlq-bucket-arjun",
     Key: path.basename(postToSlack),
     Body: postToSlackFileStream,
   },

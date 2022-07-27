@@ -6,7 +6,7 @@ const lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REG
 
 const params = {
   FunctionName: 'publishToSnsLambda', /* required */
-  BatchSize: '10',
+  BatchSize: '1',
   // BisectBatchOnFunctionError: true || false,
   // DestinationConfig: {
   //   OnFailure: {
@@ -65,5 +65,5 @@ const params = {
 
 lambda.createEventSourceMapping(params, function(err, data) {
   if (err) console.log(err, err.stack); // an error occurred
-  else     console.log(data);           // successful response
+  else     console.log('success', data);           // successful response
 });

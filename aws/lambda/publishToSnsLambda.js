@@ -23,7 +23,7 @@ exports.handler = (event) => {
     const params = {
       Message: record.body,
       MessageAttributes: formatAttributes(record.messageAttributes),
-      TopicArn: process.env.SNS_TOPIC_ARN,
+      TopicArn: process.env.SNS_ARN,
     }
 
     console.log('RECORD', record)
