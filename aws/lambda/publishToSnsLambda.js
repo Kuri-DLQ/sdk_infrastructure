@@ -1,6 +1,5 @@
 const aws = require('aws-sdk');
-import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
+require('dotenv').config({path:'../../.env'})
 
 aws.config.update({ region: process.env.REGION })
 const sns = new aws.SNS();
