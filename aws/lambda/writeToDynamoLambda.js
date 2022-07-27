@@ -1,4 +1,3 @@
-// const aws = require('aws-sdk');
 import aws from 'aws-sdk'
 import { ProvisionedConcurrencyStatusEnum } from '@aws-sdk/client-lambda';
 aws.config.update({ region: 'KURI_REGION' })

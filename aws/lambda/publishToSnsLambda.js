@@ -1,4 +1,8 @@
 const aws = require('aws-sdk');
+<<<<<<< HEAD
+=======
+require('dotenv').config({path:'../../.env'})
+>>>>>>> e3ccbaeee7c4661bc5076000d7a5b502b12b2d70
 
 aws.config.update({ region: 'KURI_REGION' })
 const sns = new aws.SNS();
@@ -20,7 +24,11 @@ exports.handler = (event) => {
     const params = {
       Message: record.body,
       MessageAttributes: formatAttributes(record.messageAttributes),
+<<<<<<< HEAD
       TopicArn: 'KURI_SNS_ARN',
+=======
+      TopicArn: process.env.SNS_ARN,
+>>>>>>> e3ccbaeee7c4661bc5076000d7a5b502b12b2d70
     }
 
     console.log('RECORD', record)

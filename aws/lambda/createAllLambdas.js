@@ -12,6 +12,14 @@ function createParams(lambdaFile) {
     },
     FunctionName: lambdaFile,
     Role: `${process.env.ROLE_ARN}`,
+    Environment: {
+      Variables: {
+          "SNS_ARN": process.env.SNS_ARN,
+          "TABLE_NAME": process.env.TABLE_NAME,
+          "QUEUE_NAME": process.env.QUEUE_NAME,
+          "DLQ_NAME": process.env.DLQ_NAME
+      }
+    },
     EphemeralStorage: {
       Size: '512'
     },
