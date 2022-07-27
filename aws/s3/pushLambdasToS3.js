@@ -2,8 +2,10 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "../clients/s3Client.js";
 import path from "path";
 import fs from "fs";
+import JSZip from 'jszip'
+const zip = new JSZip()
 
-const publishLambda = "../lambda/publishToSnsLambda.js.zip";
+const publishLambda = "../lambda/publishToSnsLambda.js";
 const pusblishLambdaFileStream = fs.createReadStream(publishLambda);
 
 const writeToDynamo = "../lambda/writeToDynamoLambda.js.zip";

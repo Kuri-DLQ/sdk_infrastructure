@@ -32,6 +32,13 @@ var params = {
   EphemeralStorage: {
     Size: '512' /* required */
   },
+  Environment: {
+    Variables: {
+      'REGION': process.env.REGION,
+      'SNS_ARN': process.env.SNS_ARN
+      /* '<EnvironmentVariableName>': ... */
+    }
+  },
   Handler: 'publishToSnsLambda.handler',
   Runtime: "nodejs12.x"
 };

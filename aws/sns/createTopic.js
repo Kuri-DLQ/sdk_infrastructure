@@ -8,7 +8,7 @@ const params = { Name: "KuriTopic" };
 export const run = async () => {
   try {
     const topic = await snsClient.send(new CreateTopicCommand(params));
-    fs.appendFile('../../.env', `SNS_ARN="${topic.TopicArn}"`);
+    fs.appendFile('../../.env', `SNS_ARN="${topic.TopicArn}"\n`);
     console.log("Success.",  topic);
     return topic;
   } catch (err) {

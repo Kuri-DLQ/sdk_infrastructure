@@ -1,7 +1,8 @@
 import {
   IAMClient,
   CreateRoleCommand,
-  AttachRolePolicyCommand
+  AttachRolePolicyCommand,
+  CreatePolicyCommand
 } from "@aws-sdk/client-iam";
 import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})

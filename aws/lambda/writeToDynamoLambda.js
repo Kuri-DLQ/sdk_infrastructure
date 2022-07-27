@@ -1,6 +1,7 @@
-const aws = require('aws-sdk');
-// require('dotenv').config();
-aws.config.update({ region: 'ca-central-1'})
+// const aws = require('aws-sdk');
+import aws from 'aws-sdk'
+import { ProvisionedConcurrencyStatusEnum } from '@aws-sdk/client-lambda';
+aws.config.update({ region: 'KURI_REGION' })
 const dynamodb = new aws.DynamoDB();
 
 const handleAttributeType = (attributes) => {
@@ -25,11 +26,10 @@ const handleAttributeType = (attributes) => {
   return attributes
 }
 
-
 exports.handler = (event) => {
   for (const record of event.Records) {
     const params = {
-      TableName: process.env.TABLE_NAME,
+      TableName: 'Kuri-DLQ-table',
       Item: {
         "id": { S: record.Sns.MessageId },
         "Message": { S: record.Sns.Message },

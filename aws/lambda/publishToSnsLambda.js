@@ -1,8 +1,6 @@
 const aws = require('aws-sdk');
-import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
 
-aws.config.update({ region: process.env.REGION })
+aws.config.update({ region: 'KURI_REGION' })
 const sns = new aws.SNS();
 
 exports.handler = (event) => {
@@ -18,12 +16,11 @@ exports.handler = (event) => {
     return result;
   }
 
-
   for (const record of event.Records) {
     const params = {
       Message: record.body,
       MessageAttributes: formatAttributes(record.messageAttributes),
-      TopicArn: process.env.SNS_TOPIC_ARN,
+      TopicArn: 'KURI_SNS_ARN',
     }
 
     console.log('RECORD', record)

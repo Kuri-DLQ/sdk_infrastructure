@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const POST_OPTIONS = {
   hostname: 'hooks.slack.com',
-  path: process.env.SLACK_PATH,
+  path: 'KURI_SLACK_PATH',
   method: 'POST',
 };
 
@@ -59,11 +59,11 @@ exports.handler = (event, context) => {
             fields: [
               {
                 type: 'mrkdwn',
-                text: `*Main Queue:*\n${process.env.QUEUE_NAME}`
+                text: `*Main Queue:*\n`
               },
               {
                 type: 'mrkdwn',
-                text: `*Dead Letter Queue:*\n${process.env.DLQ_NAME}`
+                text: `*Dead Letter Queue:*\nKuriDeadLetterQueue`
               },
             ]
           },
