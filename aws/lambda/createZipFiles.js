@@ -7,15 +7,15 @@ try {
   zip.file('./publishToSnsLambda.js', publishToSnsData);
 
   zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
-    .pipe(fs.createWriteStream('pusblishToSnsLambda.js.zip'))
+    .pipe(fs.createWriteStream('publishToSnsLambda.js.zip'))
 } catch (err) {
     console.error(err)
 }
 
 try {
   const zip = new JSZip();
-  const publishToSnsData = fs.readFileSync('./writeToDynamoLambda.js');
-  zip.file('./writeToDynamoLambda.js', publishToSnsData);
+  const writeToDynamoData = fs.readFileSync('./writeToDynamoLambda.js');
+  zip.file('./writeToDynamoLambda.js', writeToDynamoData);
 
   zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
     .pipe(fs.createWriteStream('writeToDynamoLambda.js.zip'))
@@ -25,8 +25,8 @@ try {
 
 try {
   const zip = new JSZip();
-  const publishToSnsData = fs.readFileSync('./postToSlackLambda.js');
-  zip.file('./postToSlackLambda.js', publishToSnsData);
+  const postToSlackData = fs.readFileSync('./postToSlackLambda.js');
+  zip.file('./postToSlackLambda.js', postToSlackData);
 
   zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
     .pipe(fs.createWriteStream('postToSlackLambda.js.zip'))

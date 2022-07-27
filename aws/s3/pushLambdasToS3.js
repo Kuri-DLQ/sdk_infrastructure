@@ -2,10 +2,8 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "../clients/s3Client.js";
 import path from "path";
 import fs from "fs";
-import JSZip from 'jszip'
-const zip = new JSZip()
 
-const publishLambda = "../lambda/publishToSnsLambda.js";
+const publishLambda = "../lambda/publishToSnsLambda.js.zip";
 const pusblishLambdaFileStream = fs.createReadStream(publishLambda);
 
 const writeToDynamo = "../lambda/writeToDynamoLambda.js.zip";
@@ -16,17 +14,17 @@ const postToSlackFileStream = fs.createReadStream(postToSlack);
 
 export const uploadParams = [
   {
-    Bucket: "kuri-dlq-bucket-arjun", // need to change to unique bucket name per person
+    Bucket: "kuri-dlq-bucket-tony", // need to change to unique bucket name per person
     Key: path.basename(publishLambda),
     Body: pusblishLambdaFileStream,
   },
   {
-    Bucket: "kuri-dlq-bucket-arjun",
+    Bucket: "kuri-dlq-bucket-tony",
     Key: path.basename(writeToDynamo),
     Body: writeToDynamoFileStream,
   },
   {
-    Bucket: "kuri-dlq-bucket-arjun",
+    Bucket: "kuri-dlq-bucket-tony",
     Key: path.basename(postToSlack),
     Body: postToSlackFileStream,
   },

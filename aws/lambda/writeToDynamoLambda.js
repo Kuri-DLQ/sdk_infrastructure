@@ -1,6 +1,5 @@
 import aws from 'aws-sdk'
-import { ProvisionedConcurrencyStatusEnum } from '@aws-sdk/client-lambda';
-aws.config.update({ region: 'KURI_REGION' })
+aws.config.update({ region: 'us-east-1' })
 const dynamodb = new aws.DynamoDB();
 
 const handleAttributeType = (attributes) => {

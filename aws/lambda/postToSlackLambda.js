@@ -5,7 +5,7 @@ dotenv.config({path:'../../.env'})
 
 const POST_OPTIONS = {
   hostname: 'hooks.slack.com',
-  path: 'KURI_SLACK_PATH',
+  path: 'test_path',
   method: 'POST',
 };
 

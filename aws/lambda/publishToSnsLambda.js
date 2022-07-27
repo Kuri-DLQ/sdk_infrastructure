@@ -1,10 +1,6 @@
 const aws = require('aws-sdk');
-<<<<<<< HEAD
-=======
-require('dotenv').config({path:'../../.env'})
->>>>>>> e3ccbaeee7c4661bc5076000d7a5b502b12b2d70
 
-aws.config.update({ region: 'KURI_REGION' })
+aws.config.update({ region: 'us-east-1' })
 const sns = new aws.SNS();
 
 exports.handler = (event) => {
@@ -24,11 +20,7 @@ exports.handler = (event) => {
     const params = {
       Message: record.body,
       MessageAttributes: formatAttributes(record.messageAttributes),
-<<<<<<< HEAD
-      TopicArn: 'KURI_SNS_ARN',
-=======
-      TopicArn: process.env.SNS_ARN,
->>>>>>> e3ccbaeee7c4661bc5076000d7a5b502b12b2d70
+      TopicArn: 'arn:aws:sns:us-east-1:316445519374:KuriTopic',
     }
 
     console.log('RECORD', record)
