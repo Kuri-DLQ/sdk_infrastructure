@@ -3,7 +3,7 @@ const util = require('util');
 
 const POST_OPTIONS = {
   hostname: 'hooks.slack.com',
-  path: 'test_path',
+  path: 'KURI_SNS_PATH',
   method: 'POST',
 };
 

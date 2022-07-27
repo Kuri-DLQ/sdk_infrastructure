@@ -1,5 +1,5 @@
-import aws from 'aws-sdk'
-aws.config.update({ region: 'us-east-1' })
+const aws = require('aws-sdk');
+aws.config.update({ region: 'KURI_REGION' })
 const dynamodb = new aws.DynamoDB();
 
 const handleAttributeType = (attributes) => {
