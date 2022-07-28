@@ -5,7 +5,7 @@ import { joinDlqMain } from "./sqs/join-dlq-main"
 import { createTopic } from "./sns/createTopic"
 import { createTable } from "./dynamodb/createDynamoTable"
 import { createBucket } from "./s3/createBucket"
-import { replaceEnvVariables } from "../utils/replaceEnvVariables"
+import { replaceEnvVariables } from "../../../sdk_infrastructure/utils/replaceEnvVariables"
 import { createZipFiles } from "./lambda/createZipFile"
 import { pushLambdasToS3 } from "./lambda/pushLambdasToS3"
 import { createLambdas } from "./lambda/createAllLambdas"
@@ -13,7 +13,7 @@ import { setEventSourceMapping } from "./lambda/lambdaEventSourceMapping"
 import { suscribeToSns } from "./lambda/subscribeToSns"
 import { addPermissions } from "./lambda/addPermissions"
 
-export const orchastrator = {
+const orchestrator = {
   createRole,
   createMainQueue,
   createDLQ,
@@ -29,3 +29,5 @@ export const orchastrator = {
   suscribeToSns,
   addPermissions  
 }
+
+export default orchestrator
