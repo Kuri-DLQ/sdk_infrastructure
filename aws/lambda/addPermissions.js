@@ -4,9 +4,9 @@ dotenv.config({path: '../../.env'})
 import { getAccountId } from './awsAccountId.js'
 
 const lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION});
-const awsAccountId = getAccountId();
 
 export const addPermissions = () => {
+  const awsAccountId = getAccountId();
   const writeToDynamoParams = {
     Action: 'lambda:InvokeFunction',
     FunctionName: 'writeToDynamoLambda',

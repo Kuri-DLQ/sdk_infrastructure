@@ -14,7 +14,7 @@ const writeToDynamoFileStream = fs.createReadStream(writeToDynamo);
 const postToSlack = "../lambda/handlrs/postToSlackLambda.js.zip";
 const postToSlackFileStream = fs.createReadStream(postToSlack);
 
-export const uploadParams = [
+const uploadParams = [
   {
     Bucket: process.env.BUCKET_NAME, // need to change to unique bucket name per person
     Key: path.basename(publishLambda),
