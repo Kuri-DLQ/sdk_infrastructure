@@ -5,13 +5,13 @@ import fs from "fs";
 import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
 
-const publishLambda = "../lambda/publishToSnsLambda.js.zip";
+const publishLambda = "../lambda/handlers/publishToSnsLambda.js.zip";
 const pusblishLambdaFileStream = fs.createReadStream(publishLambda);
 
-const writeToDynamo = "../lambda/writeToDynamoLambda.js.zip";
+const writeToDynamo = "../lambda/handlers/writeToDynamoLambda.js.zip";
 const writeToDynamoFileStream = fs.createReadStream(writeToDynamo);
 
-const postToSlack = "../lambda/postToSlackLambda.js.zip";
+const postToSlack = "../lambda/handlrs/postToSlackLambda.js.zip";
 const postToSlackFileStream = fs.createReadStream(postToSlack);
 
 export const uploadParams = [
@@ -32,7 +32,7 @@ export const uploadParams = [
   },
 ];
 
-export const pushToBucket = async () => {
+export const pushLambdasToS3 = async () => {
   uploadParams.forEach(async param => {
     try {
       const data = await s3Client.send(new PutObjectCommand(param));
@@ -43,4 +43,5 @@ export const pushToBucket = async () => {
     }
   });
 };
-pushToBucket();
+
+// pushToBucket();

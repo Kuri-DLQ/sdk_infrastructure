@@ -35,7 +35,7 @@ const lambdaFunctions = [
   'writeToDynamoLambda'
 ]
   
-const createLambdas = async () => {
+export const createLambdas = async () => {
   lambdaFunctions.forEach(async lambdaFunction => {
     try {
       let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION});
@@ -50,4 +50,5 @@ const createLambdas = async () => {
     }
   })
 };
-createLambdas();
+
+// createLambdas();

@@ -56,7 +56,7 @@ const sqsPolicyParams = {
   RoleName: ROLE,
 };
 
-const run = async () => {
+export const createRole = async () => {
   try {
     const data = await iam.send(new CreateRoleCommand(createParams));
     console.log("Role ARN is", data.Role.Arn); // successful response
@@ -102,6 +102,6 @@ const run = async () => {
   }
 };
 
-run();
+// createRole();
 
 

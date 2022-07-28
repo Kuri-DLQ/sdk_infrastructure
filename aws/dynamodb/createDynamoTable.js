@@ -24,7 +24,7 @@ export const params = {
   },
 };
 
-export const run = async () => {
+export const createTable = async () => {
   try {
     const data = await ddbClient.send(new CreateTableCommand(params));
     console.log("Table Created", data);
@@ -33,4 +33,5 @@ export const run = async () => {
     console.log("Error", err);
   }
 };
-run();
+
+// createTable();

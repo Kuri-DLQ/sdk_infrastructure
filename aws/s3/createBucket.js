@@ -7,7 +7,7 @@ dotenv.config({path:'../../.env'})
 export const bucketParams = { Bucket: "kuri-dlq-bucket-arjun" };
 fs.appendFile('../../.env', `BUCKET_NAME="kuri-dlq-bucket-arjun"\n`)
 
-export const run = async () => {
+export const createBucket = async () => {
   try {
     const data = await s3Client.send(new CreateBucketCommand(bucketParams));
     console.log("Success", data);
@@ -16,4 +16,5 @@ export const run = async () => {
     console.log("Error", err);
   }
 };
-run();
+
+// createBucket();

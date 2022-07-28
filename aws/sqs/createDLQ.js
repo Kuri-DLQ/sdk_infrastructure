@@ -22,4 +22,4 @@ export const createDLQ = async () => {
   }
 };
 
-createDLQ();
+// createDLQ();

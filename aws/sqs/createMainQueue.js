@@ -8,7 +8,7 @@ const params = {
   QueueName: "KuriMainQueue",
 };
 
-export const run = async () => {
+export const createMainQueue = async () => {
   try {
     const mainQueue = await sqsClient.send(new CreateQueueCommand(params));
     console.log("Success", mainQueue);
@@ -19,4 +19,5 @@ export const run = async () => {
     console.log("Error", err);
   }
 };
-run();
+
+// createMainQueue();

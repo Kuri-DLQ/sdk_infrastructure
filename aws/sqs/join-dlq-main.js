@@ -16,7 +16,7 @@ const params = {
 
 
 
-const run = async () => {
+const joinDlqMain = async () => {
   try {
     const data = await sqsClient.send(new SetQueueAttributesCommand(params));
     console.log("Success", data);
@@ -25,5 +25,6 @@ const run = async () => {
     console.log("Error", err);
   }
 };
-run();
+
+// joinDlqMain();
 
