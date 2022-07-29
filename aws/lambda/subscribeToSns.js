@@ -15,7 +15,7 @@ export const subscribeToSns = () => {
   
   sns.subscribe(dynamoParams, function(err, data) {
     if (err) console.log(err, err.stack);
-    else     console.log('success', data);
+    // else     console.log('success', data);
   });
   
   const slackParams = {
@@ -27,6 +27,6 @@ export const subscribeToSns = () => {
   
   sns.subscribe(slackParams, function(err, data) {
     if (err) console.log(err, err.stack);
-    else     console.log('success', data);
+    // else     console.log('success', data);
   });  
 }

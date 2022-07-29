@@ -14,6 +14,6 @@ export const setEventSourceMapping = () => {
   
   lambda.createEventSourceMapping(publishToSnsParams, function(err, data) {
     if (err) console.log(err, err.stack);
-    else     console.log('success', data);
+    // else     console.log('success', data);
   });
 }

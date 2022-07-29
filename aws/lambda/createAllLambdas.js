@@ -40,7 +40,7 @@ export const createLambdas = async () => {
     try {
       let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION});
       await lambda.createFunction(createParams(lambdaFunction), (err, data) => {
-        console.log('success', data)
+        // console.log('success', data)
         if (err) {
           console.log('error', err.stack)
         }
