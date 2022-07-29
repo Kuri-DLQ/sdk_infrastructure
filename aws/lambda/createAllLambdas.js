@@ -36,19 +36,23 @@ const lambdaFunctions = [
 ]
   
 export const createLambdas = async () => {
-  lambdaFunctions.forEach(async lambdaFunction => {
-    try {
-      let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION});
-      await lambda.createFunction(createParams(lambdaFunction), (err, data) => {
-        // console.log('success', data)
-        if (err) {
-          console.log('error', err.stack)
-        }
-      })
-    } catch (err) {
-      console.log("Error", err);
-    }
-  })
+  return new Promise(async (resolve, reject) => {
+    lambdaFunctions.forEach(async lambdaFunction => {
+      try {
+        let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: 'ca-central-1'}); //hard coded region ***
+        await lambda.createFunction(createParams(lambdaFunction), (err, data) => {
+          if (err) {
+            console.log('error', err.stack)
+            reject(err);
+          }
+        })
+      } catch (err) {
+        console.log("Error", err);
+        reject(err)
+      }
+    });
+    resolve();
+  });  
 };
 
 // createLambdas();

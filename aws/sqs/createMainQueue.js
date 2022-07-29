@@ -9,15 +9,19 @@ const params = {
 };
 
 export const createMainQueue = async () => {
-  try {
-    const mainQueue = await sqsClient.send(new CreateQueueCommand(params));
-    console.log("Success", mainQueue);
-    const queueName = getQueueName(mainQueue.QueueUrl)
-    fs.appendFile('../../.env', `MAIN_QUEUE_URL="${mainQueue.QueueUrl}"\nMAIN_QUEUE_NAME="${queueName}"\n`);
-    return mainQueue; // For unit tests.
-  } catch (err) {
-    console.log("Error", err);
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      const mainQueue = await sqsClient.send(new CreateQueueCommand(params));
+      // console.log("Success", mainQueue);
+      const queueName = getQueueName(mainQueue.QueueUrl)
+      await fs.appendFile('../../.env', `MAIN_QUEUE_URL="${mainQueue.QueueUrl}"\nMAIN_QUEUE_NAME="${queueName}"\n`);
+      resolve()
+      // return mainQueue; // For unit tests.
+    } catch (err) {
+      // console.log("Error", err);
+      reject(err)
+    }
+  })
 };
 
 // createMainQueue();

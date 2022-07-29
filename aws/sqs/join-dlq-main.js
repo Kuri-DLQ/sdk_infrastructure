@@ -17,13 +17,17 @@ const params = {
 
 
 export const joinDlqMain = async () => {
-  try {
-    const data = await sqsClient.send(new SetQueueAttributesCommand(params));
-    console.log("Success", data);
-    return data; // For unit tests.
-  } catch (err) {
-    console.log("Error", err);
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await sqsClient.send(new SetQueueAttributesCommand(params));
+      // console.log("Success", data);
+      resolve()
+      // return data; // For unit tests.
+    } catch (err) {
+      // console.log("Error", err);
+      reject(err)
+    }
+  })
 };
 
 // joinDlqMain();

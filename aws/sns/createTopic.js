@@ -6,14 +6,17 @@ import fs from 'fs-extra';
 const params = { Name: "KuriTopic" };
 
 export const createTopic = async () => {
-  try {
-    const topic = await snsClient.send(new CreateTopicCommand(params));
-    fs.appendFile('../../.env', `SNS_ARN="${topic.TopicArn}"\n`);
-    console.log("Success.",  topic);
-    return topic;
-  } catch (err) {
-    console.log("Error", err.stack);
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      const topic = await snsClient.send(new CreateTopicCommand(params));
+      await fs.appendFile('../sdk_infrastructure/.env', `SNS_ARN="${topic.TopicArn}"\n`);
+      // return topic;
+      resolve(topic);
+    } catch (err) {
+      // console.log("Error", err.stack);
+      reject(err);
+    }
+  });
 };
 
 // createTopic();

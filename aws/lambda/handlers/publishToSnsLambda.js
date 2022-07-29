@@ -1,6 +1,6 @@
 const aws = require('aws-sdk');
 
-aws.config.update({ region: 'KURI_REGION' })
+aws.config.update({ region: 'ca-central-1' })
 const sns = new aws.SNS();
 
 exports.handler = (event) => {
@@ -20,7 +20,7 @@ exports.handler = (event) => {
     const params = {
       Message: record.body,
       MessageAttributes: formatAttributes(record.messageAttributes),
-      TopicArn: 'KURI_SNS_ARN',
+      TopicArn: 'arn:aws:sns:ca-central-1:003330079433:KuriTopic',
     }
 
     console.log('RECORD', record)
