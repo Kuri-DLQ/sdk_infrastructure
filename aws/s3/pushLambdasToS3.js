@@ -2,13 +2,13 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "../clients/s3Client.js";
 import path from "path";
 import fs from "fs";
-import dotenv from 'dotenv'
-
+// import dotenv from 'dotenv'
+// dotenv.config({path:'../sdk_infrastructure/.env'})
+import { store } from '../../utils/store.js'
 
 export const pushLambdasToS3 = async () => {
-  dotenv.config({path:'../sdk_infrastructure/.env'})
-const BUCKET_NAME = process.env.BUCKET_NAME
-  console.log(process.env.BUCKET_NAME)
+const BUCKET_NAME = store.bucket_name
+  console.log('The bucket name from pushLambdasToS3:', BUCKET_NAME)
   return new Promise(async (resolve, reject) => {
     const publishLambda = "../sdk_infrastructure/aws/lambda/handlers/publishToSnsLambda.js.zip";
     const pusblishLambdaFileStream = fs.createReadStream(publishLambda);

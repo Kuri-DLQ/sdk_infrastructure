@@ -4,13 +4,13 @@ import {
   AttachRolePolicyCommand,
   CreatePolicyCommand
 } from "@aws-sdk/client-iam";
-import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
-import fs from 'fs-extra'
+// import dotenv from 'dotenv'
+// dotenv.config({path:'../../.env'})
+// import fs from 'fs-extra'
+import { store } from '../../utils/store.js'
+console.log('store: ', store)
 
-const REGION = `${process.env.REGION}`;
-
-const iam = new IAMClient({ region: REGION });
+const iam = new IAMClient({ region: store.region });
 
 const ROLE = "KuriRole";
 const myPolicy = {
@@ -60,7 +60,8 @@ export const createRole = async () => {
   return new Promise(async (resolve, reject) => {
     try {
       const data = await iam.send(new CreateRoleCommand(createParams));
-      await fs.appendFile('../sdk_infrastructure/.env', `ROLE_ARN="${data.Role.Arn}"\n`)
+      // await fs.appendFile('../sdk_infrastructure/.env', `ROLE_ARN="${data.Role.Arn}"\n`)
+      store.role_arn = data.Role.Arn
     } catch (err) {
       console.log("Error when creating role.");
       throw err;

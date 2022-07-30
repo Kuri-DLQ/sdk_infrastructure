@@ -1,6 +1,5 @@
 import JSZip from 'jszip';
 import fs from 'fs';
-
 const publishToSnsLambdaZip = new JSZip();
 
 export const createZipFiles = async () => {

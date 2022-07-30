@@ -1,7 +1,7 @@
-import dotenv from 'dotenv'
-dotenv.config()
+// import dotenv from 'dotenv'
+// dotenv.config()
+import { store } from '../../utils/store.js'
 
 import  { SNSClient } from "@aws-sdk/client-sns";
-const REGION = process.env.REGION
-const snsClient = new SNSClient({ region: REGION });
+const snsClient = new SNSClient({ region: store.region });
 export  { snsClient };

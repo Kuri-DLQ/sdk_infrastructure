@@ -1,8 +1,9 @@
 import AWS from 'aws-sdk'
-import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
+// import dotenv from 'dotenv'
+// dotenv.config({path:'../../.env'})
+import { store } from '../../utils/store.js'
 
-const lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION});
+const lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: store.region});
 
 export const setEventSourceMapping = () => {
   return new Promise((resolve, reject) => {
@@ -10,7 +11,7 @@ export const setEventSourceMapping = () => {
       FunctionName: 'publishToSnsLambda',
       BatchSize: '10',
       Enabled: true || false,
-      EventSourceArn: process.env.DLQ_ARN,
+      EventSourceArn: store.dlq_arn,
     };
     
     lambda.createEventSourceMapping(publishToSnsParams, function(err, data) {

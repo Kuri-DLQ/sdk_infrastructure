@@ -1,9 +1,9 @@
 import AWS from 'aws-sdk'
-import dotenv from 'dotenv'
-dotenv.config({path: '../../.env'})
+// import dotenv from 'dotenv'
+// dotenv.config({path: '../../.env'})
 import { getAccountId } from './awsAccountId.js'
-
-const lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION});
+import { store } from '../../utils/store.js'
+const lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: store.region});
 
 export const addPermissions = () => {
   return new Promise((resolve, reject) => {
@@ -14,7 +14,7 @@ export const addPermissions = () => {
       Principal: '*',
       StatementId: 'WriteToDynamoDB',
       SourceAccount: awsAccountId,
-      SourceArn: process.env.SNS_ARN
+      SourceArn: store.sns_arn
     };
     
     lambda.addPermission(writeToDynamoParams, function (err, data) {
@@ -31,7 +31,7 @@ export const addPermissions = () => {
       Principal: '*',
       StatementId: 'postToSlackLambda',
       SourceAccount: awsAccountId,
-      SourceArn: process.env.SNS_ARN
+      SourceArn: store.sns_arn
     
     };
     

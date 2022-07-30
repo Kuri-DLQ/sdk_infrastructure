@@ -1,8 +1,12 @@
 import { CreateTableCommand } from "@aws-sdk/client-dynamodb";
 import { ddbClient } from "../clients/ddbClient.js";
+import { store } from '../../utils/store.js'
+
+const tableName = "Kuri-DLQ-table"
+store.tableName = tableName
 
 export const params = {
-  TableName: "Kuri-DLQ-table",
+  TableName: tableName,
   AttributeDefinitions: [
     {
       AttributeName: "id",

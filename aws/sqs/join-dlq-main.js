@@ -1,17 +1,18 @@
 import { SetQueueAttributesCommand } from  "@aws-sdk/client-sqs";
 import { sqsClient } from  "../clients/sqsClient.js";
-import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
+// import dotenv from 'dotenv'
+// dotenv.config({path:'../../.env'})
+import { store } from '../../utils/store.js'
 
 
 // Set the parameters
 const params = {
   Attributes: {
     RedrivePolicy:
-      `{"deadLetterTargetArn":"${process.env.DLQ_ARN}",` +
+      `{"deadLetterTargetArn":"${store.dlq_arn}",` +
       '"maxReceiveCount":"3"}',
   },
-  QueueUrl: process.env.MAIN_QUEUE_URL,
+  QueueUrl: store.main_queue_url,
 };
 
 

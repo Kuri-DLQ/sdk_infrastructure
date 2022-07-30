@@ -1,7 +1,7 @@
-import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
+// import dotenv from 'dotenv'
+// dotenv.config({path:'../../.env'})
+import { store } from '../../utils/store.js'
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-const REGION = process.env.REGION
-const ddbClient = new DynamoDBClient({ region: REGION });
+const ddbClient = new DynamoDBClient({ region: store.region });
 export { ddbClient };

@@ -1,13 +1,14 @@
 import AWS from "aws-sdk"
-import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
+// import dotenv from 'dotenv'
+// dotenv.config({path:'../../.env'})
 const sns = new AWS.SNS({ apiVersion: '2010-03-31', region: process.env.REGION })
 import { getAccountId } from '../lambda/awsAccountId';
+import { store } from '../../utils/store.js';
 
 const dynamoParams = {
   Protocol: 'lambda',
-  TopicArn: process.env.SNS_ARN,
-  Endpoint: `arn:aws:lambda:${process.env.REGION}:${getAccountId()}:function:writeToDynamoLambda`,
+  TopicArn: store.sns_arn,
+  Endpoint: `arn:aws:lambda:${store.region}:${getAccountId()}:function:writeToDynamoLambda`,
   ReturnSubscriptionArn: true || false
 };
 sns.subscribe(dynamoSubscription, function(err, data) {
@@ -17,8 +18,8 @@ sns.subscribe(dynamoSubscription, function(err, data) {
 
 const slackParams = {
   Protocol: 'lambda',
-  TopicArn: process.env.SNS_ARN,
-  Endpoint: `arn:aws:lambda:${process.env.REGION}:${getAccountId()}:function:writeToDynamoLambda`,
+  TopicArn: store.sns_arn,
+  Endpoint: `arn:aws:lambda:${store.region}:${getAccountId()}:function:writeToDynamoLambda`,
   ReturnSubscriptionArn: true || false
 };
 sns.subscribe(params, function(err, data) {
