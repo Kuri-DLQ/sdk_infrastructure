@@ -42,4 +42,4 @@ export async function createLambda(args) {
   };
   run();
 }
-createLambda()
+// createLambda()

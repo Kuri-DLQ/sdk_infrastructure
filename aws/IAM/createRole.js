@@ -60,7 +60,7 @@ export const createRole = async () => {
   return new Promise(async (resolve, reject) => {
     try {
       const data = await iam.send(new CreateRoleCommand(createParams));
-      await fs.appendFile('../sdk_infrastructure/.env', `ROLE_ARN="${data.Role.Arn}"\n`)
+      await fs.appendFile('../sdk_infrastructure/.env', `\nROLE_ARN="${data.Role.Arn}"\n`)
     } catch (err) {
       console.log("Error when creating role.");
       throw err;

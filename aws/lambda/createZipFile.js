@@ -57,7 +57,9 @@ export const createZipFiles = async () => {
       reject(err);
     }
 
-    resolve();
+    setTimeout(() => {
+      resolve();
+    }, 10000);
   })
   
 }

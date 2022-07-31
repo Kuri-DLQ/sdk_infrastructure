@@ -7,8 +7,7 @@ import dotenv from 'dotenv'
 
 export const pushLambdasToS3 = async () => {
   dotenv.config({path:'../sdk_infrastructure/.env'})
-const BUCKET_NAME = process.env.BUCKET_NAME
-  console.log(process.env.BUCKET_NAME)
+  const BUCKET_NAME = 'kuri-dlq-bucket-1'
   return new Promise(async (resolve, reject) => {
     const publishLambda = "../sdk_infrastructure/aws/lambda/handlers/publishToSnsLambda.js.zip";
     const pusblishLambdaFileStream = fs.createReadStream(publishLambda);
@@ -48,7 +47,8 @@ const BUCKET_NAME = process.env.BUCKET_NAME
         reject(err)
       }
     });
-    resolve()
+
+    setTimeout(() => resolve(), 10000)
   })
 };
 
