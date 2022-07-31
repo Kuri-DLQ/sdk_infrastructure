@@ -2,9 +2,9 @@ import AWS from 'aws-sdk'
 import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
 
-const lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION});
-
 export const setEventSourceMapping = () => {
+  console.log("Here")
+  const lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION});
   return new Promise((resolve, reject) => {
     const publishToSnsParams = {
       FunctionName: 'publishToSnsLambda',
@@ -19,8 +19,9 @@ export const setEventSourceMapping = () => {
         reject(err)
       }
       // else     console.log('success', data);
+      resolve()
     });
     
-    resolve()
+    
   })
 }

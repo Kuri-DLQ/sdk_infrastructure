@@ -16,7 +16,7 @@ function createParams(lambdaFile) {
       Variables: {
           "SNS_ARN": process.env.SNS_ARN,
           "TABLE_NAME": process.env.TABLE_NAME,
-          "QUEUE_NAME": process.env.QUEUE_NAME,
+          "QUEUE_NAME": process.env.MAIN_QUEUE_NAME,
           "DLQ_NAME": process.env.DLQ_NAME
       }
     },
@@ -39,7 +39,7 @@ export const createLambdas = async () => {
   return new Promise(async (resolve, reject) => {
     lambdaFunctions.forEach(async lambdaFunction => {
       try {
-        let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: 'ca-central-1'}); //hard coded region ***
+        let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION });
         await lambda.createFunction(createParams(lambdaFunction), (err, data) => {
           if (err) {
             console.log('error', err.stack)

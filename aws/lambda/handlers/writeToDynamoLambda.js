@@ -1,9 +1,8 @@
 const aws = require('aws-sdk');
-aws.config.update({ region: 'ca-central-1' })
+aws.config.update({ region: 'us-east-1' })
 const dynamodb = new aws.DynamoDB();
 
 const handleAttributeType = (attributes) => {
-  console.log('BEFORE LOOP in handleAttributeType', attributes)
   for (const key in attributes) {
     let stringValue = attributes[key]["Value"]
     if (stringValue.endsWith('99999')) {

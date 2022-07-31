@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config({path:'../../.env'})
 
 import  { SNSClient } from "@aws-sdk/client-sns";
 const REGION = process.env.REGION
