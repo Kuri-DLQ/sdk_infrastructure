@@ -4,10 +4,10 @@ dotenv.config({path:'../../.env'})
 import { CreateFunctionCommand } from "@aws-sdk/client-lambda";
 import AWS from 'aws-sdk'
 
-function createParams(lambdaFile) {
+function createParams(lambdaFile, bucketName) {
   const params = {
     Code: {
-      S3Bucket: `${process.env.BUCKET_NAME}`,
+      S3Bucket: bucketName,
       S3Key: `${lambdaFile}.js.zip`,
     },
     FunctionName: lambdaFile,
@@ -34,24 +34,36 @@ const lambdaFunctions = [
   'postToSlackLambda',
   'writeToDynamoLambda'
 ]
-  
-export const createLambdas = async () => {
+
+const retry = false
+export const createLambdas = async (bucketName) => {
   return new Promise(async (resolve, reject) => {
     lambdaFunctions.forEach(async lambdaFunction => {
       try {
         let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION });
-        await lambda.createFunction(createParams(lambdaFunction), (err, data) => {
+        await lambda.createFunction(createParams(lambdaFunction, bucketName), (err, data) => {
           if (err) {
             console.log('error', err.stack)
             reject(err);
           }
         })
       } catch (err) {
-        console.log("Error", err);
-        reject(err)
+        // console.log("Error", err);
+        // reject(err)
+        retry = true
+        while (retry) {
+          let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION });
+          await lambda.createFunction(createParams(lambdaFunction), (err, data) => {
+            if (err) {
+              console.log('error', err.stack)
+              reject('error from createAllLambdas', err);
+            }
+          })
+        }
       }
     });
-    resolve();
+
+    setTimeout(() => resolve(), 10000);
   });  
 };
 

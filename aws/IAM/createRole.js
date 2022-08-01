@@ -60,7 +60,7 @@ export const createRole = async () => {
   return new Promise(async (resolve, reject) => {
     try {
       const data = await iam.send(new CreateRoleCommand(createParams));
-      fs.appendFileSync('../sdk_infrastructure/.env', `ROLE_ARN="${data.Role.Arn}"\n`)
+      fs.appendFileSync('../sdk_infrastructure/.env', `\nROLE_ARN="${data.Role.Arn}"\n`)
     } catch (err) {
       console.log("Error when creating role.");
       throw err;
@@ -96,6 +96,6 @@ export const createRole = async () => {
       throw err;
     }
 
-    resolve();
+    setTimeout(() => resolve(), 10000);
   })
 };
