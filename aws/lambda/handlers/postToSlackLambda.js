@@ -54,7 +54,7 @@ exports.handler = (event, context) => {
             fields: [
               {
                 type: 'mrkdwn',
-                text: `*Main Queue:*\n`
+                text: `*Main Queue:*\nKURI_QUEUE_NAME`
               },
               {
                 type: 'mrkdwn',

@@ -16,6 +16,7 @@ const params = {
 
 export const joinDlqMain = async () => {
   return new Promise(async (resolve, reject) => {
+    console.log('params from join module: ', params)
     try {
       const data = await sqsClient.send(new SetQueueAttributesCommand(params));
       resolve()

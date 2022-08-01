@@ -12,7 +12,7 @@ export const createMainQueue = async () => {
     try {
       const mainQueue = await sqsClient.send(new CreateQueueCommand(params));
       const queueName = getQueueName(mainQueue.QueueUrl)
-      fs.appendFileSync('../sdk_infrastructure/.env', `MAIN_QUEUE_URL="${mainQueue.QueueUrl}"\nMAIN_QUEUE_NAME="${queueName}"\n`);
+      fs.appendFileSync('../sdk_infrastructure/.env', `MAIN_QUEUE_URL="${mainQueue.QueueUrl}"\nMAIN_QUEUE_NAME="KuriMainQueue"\n`);
       resolve()
     } catch (err) {
       reject(err)
