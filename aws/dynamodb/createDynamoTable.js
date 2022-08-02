@@ -24,13 +24,13 @@ export const params = {
   },
 };
 
-export const run = async () => {
-  try {
-    const data = await ddbClient.send(new CreateTableCommand(params));
-    console.log("Table Created", data);
-    return data;
-  } catch (err) {
-    console.log("Error", err);
-  }
+export const createTable = async () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await ddbClient.send(new CreateTableCommand(params));
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
 };
-run();

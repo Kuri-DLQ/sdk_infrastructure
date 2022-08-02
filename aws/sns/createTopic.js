@@ -2,17 +2,16 @@ import { CreateTopicCommand } from "@aws-sdk/client-sns";
 import { snsClient } from "../clients/snsClient.js";
 import fs from 'fs-extra';
 
-// Set the parameters
 const params = { Name: "KuriTopic" };
 
-export const run = async () => {
-  try {
-    const topic = await snsClient.send(new CreateTopicCommand(params));
-    fs.appendFile('../../.env', `SNS_ARN="${topic.TopicArn}"\n`);
-    console.log("Success.",  topic);
-    return topic;
-  } catch (err) {
-    console.log("Error", err.stack);
-  }
+export const createTopic = async () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const topic = await snsClient.send(new CreateTopicCommand(params));
+      await fs.appendFile('../sdk_infrastructure/.env', `SNS_ARN="${topic.TopicArn}"\n`);
+      resolve(topic);
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
-run();

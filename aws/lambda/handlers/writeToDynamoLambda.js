@@ -1,9 +1,8 @@
 const aws = require('aws-sdk');
-aws.config.update({ region: 'KURI_REGION' })
+aws.config.update({ region: 'KURI_REGION'})
 const dynamodb = new aws.DynamoDB();
 
 const handleAttributeType = (attributes) => {
-  console.log('BEFORE LOOP in handleAttributeType', attributes)
   for (const key in attributes) {
     let stringValue = attributes[key]["Value"]
     if (stringValue.endsWith('99999')) {
@@ -20,9 +19,25 @@ const handleAttributeType = (attributes) => {
     }
   }
 
-  console.log('AFTER LOOP in handleAttributeType', attributes)
   return attributes
 }
+
+const getDayMonthYear = (date) => {
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1;
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const seconds = date.getUTCSeconds();
+
+  return `${year}-` +
+`${String(month).length === 1 ? '0' + month : month}-` +
+`${String(day).length === 1 ? '0' + day : day} ` +
+`${String(hours).length === 1 ? '0' + hours : hours}:` +
+`${String(minutes).length === 1 ? '0' + minutes : minutes}:` +
+`${String(seconds).length === 1 ? '0' + seconds : seconds}`
+}
+
 
 exports.handler = (event) => {
   for (const record of event.Records) {
@@ -31,7 +46,8 @@ exports.handler = (event) => {
       Item: {
         "id": { S: record.Sns.MessageId },
         "Message": { S: record.Sns.Message },
-        "Attributes": { S: JSON.stringify(handleAttributeType(record.Sns.MessageAttributes)) }
+        "Attributes": { S: JSON.stringify(handleAttributeType(record.Sns.MessageAttributes)) },
+        "Timestamp": { S: getDayMonthYear(new Date(record.Sns.Timestamp))}
       }
     }
 

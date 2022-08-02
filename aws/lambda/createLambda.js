@@ -9,7 +9,7 @@ import AWS from 'aws-sdk'
 export async function createLambda(args) {
   var params = {
     Code: {
-      S3Bucket: `${process.env.BUCKET_NAME}`,
+      S3Bucket: 'kuri-dlq-bucket-arjun',
       S3Key: 'publishToSnsLambda.js.zip',
     },
     FunctionName: 'publishToSnsLambda',

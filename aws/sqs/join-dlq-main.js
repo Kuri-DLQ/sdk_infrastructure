@@ -1,29 +1,24 @@
 import { SetQueueAttributesCommand } from  "@aws-sdk/client-sqs";
 import { sqsClient } from  "../clients/sqsClient.js";
 import dotenv from 'dotenv'
-dotenv.config({path:'../../.env'})
+dotenv.config({path:'../sdk_infrastructure/.env'})
 
+export const joinDlqMain = async (mainQueueUrl) => {
+  const params = {
+    Attributes: {
+      RedrivePolicy:
+        `{"deadLetterTargetArn":"${process.env.DLQ_ARN}",` +
+        '"maxReceiveCount":"3"}',
+    },
+    QueueUrl: mainQueueUrl,
+  };
 
-// Set the parameters
-const params = {
-  Attributes: {
-    RedrivePolicy:
-      `{"deadLetterTargetArn":"${process.env.DLQ_ARN}",` +
-      '"maxReceiveCount":"3"}',
-  },
-  QueueUrl: process.env.MAIN_QUEUE_URL,
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await sqsClient.send(new SetQueueAttributesCommand(params));
+      resolve()
+    } catch (err) {
+      reject(err)
+    }
+  })
 };
-
-
-
-const run = async () => {
-  try {
-    const data = await sqsClient.send(new SetQueueAttributesCommand(params));
-    console.log("Success", data);
-    return data; // For unit tests.
-  } catch (err) {
-    console.log("Error", err);
-  }
-};
-run();
-

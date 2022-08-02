@@ -4,16 +4,15 @@ import fs from 'fs-extra'
 import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
 
-export const bucketParams = { Bucket: "kuri-dlq-bucket-arjun" };
-fs.appendFile('../../.env', `BUCKET_NAME="kuri-dlq-bucket-arjun"\n`)
-
-export const run = async () => {
-  try {
-    const data = await s3Client.send(new CreateBucketCommand(bucketParams));
-    console.log("Success", data);
-    return data;
-  } catch (err) {
-    console.log("Error", err);
-  }
+export const createBucket = async (bucketName) => {
+  // await fs.appendFile('../sdk_infrastructure/.env', `BUCKET_NAME="kuri-dlq-bucket-arjun"\n`)
+  const bucketParams = { Bucket: bucketName };
+  return new Promise (async (resolve, reject) => {
+    try {
+      const data = await s3Client.send(new CreateBucketCommand(bucketParams));
+      setTimeout(() => resolve(data), 10000);
+    } catch (err) {
+      reject(err);
+    }
+  });
 };
-run();

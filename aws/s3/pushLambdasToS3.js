@@ -5,42 +5,67 @@ import fs from "fs";
 import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
 
-const publishLambda = "../lambda/publishToSnsLambda.js.zip";
-const pusblishLambdaFileStream = fs.createReadStream(publishLambda);
+export const pushLambdasToS3 = async (bucketName) => {
 
-const writeToDynamo = "../lambda/writeToDynamoLambda.js.zip";
-const writeToDynamoFileStream = fs.createReadStream(writeToDynamo);
+  return new Promise(async (resolve, reject) => {
+    const publishLambda = "../sdk_infrastructure/aws/lambda/handlers/publishToSnsLambda.js.zip";
+    const pusblishLambdaFileStream = fs.createReadStream(publishLambda);
+  
+    const writeToDynamo = "../sdk_infrastructure/aws/lambda/handlers/writeToDynamoLambda.js.zip";
+    const writeToDynamoFileStream = fs.createReadStream(writeToDynamo);
+  
+    const postToSlack = "../sdk_infrastructure/aws/lambda/handlers/postToSlackLambda.js.zip";
+    const postToSlackFileStream = fs.createReadStream(postToSlack);
+  
+    
+    const publishSnsParams = {
+      Bucket: bucketName, // need to change to unique bucket name per person
+      Key: path.basename(publishLambda),
+      Body: pusblishLambdaFileStream,
+    };
 
-const postToSlack = "../lambda/postToSlackLambda.js.zip";
-const postToSlackFileStream = fs.createReadStream(postToSlack);
+    const writeDynamoParams = {
+      Bucket: bucketName,
+      Key: path.basename(writeToDynamo),
+      Body: writeToDynamoFileStream,
+    };
 
-export const uploadParams = [
-  {
-    Bucket: process.env.BUCKET_NAME, // need to change to unique bucket name per person
-    Key: path.basename(publishLambda),
-    Body: pusblishLambdaFileStream,
-  },
-  {
-    Bucket: process.env.BUCKET_NAME,
-    Key: path.basename(writeToDynamo),
-    Body: writeToDynamoFileStream,
-  },
-  {
-    Bucket: process.env.BUCKET_NAME,
-    Key: path.basename(postToSlack),
-    Body: postToSlackFileStream,
-  },
-];
-
-export const pushToBucket = async () => {
-  uploadParams.forEach(async param => {
+    const postSlackParams = {
+      Bucket: bucketName,
+      Key: path.basename(postToSlack),
+      Body: postToSlackFileStream,
+    };
+  
     try {
-      const data = await s3Client.send(new PutObjectCommand(param));
-      console.log("Success", data);
-      return data;
+      const data = await s3Client.send(new PutObjectCommand(publishSnsParams));
+      const data1 = await s3Client.send(new PutObjectCommand(writeDynamoParams));
+      const data2 = await s3Client.send(new PutObjectCommand(postSlackParams));
+      setTimeout(() => resolve(), 10000);
     } catch (err) {
       console.log("Error", err);
-    }
+      reject(err)
+    } 
+    
+    // finally {
+    //   resolve()
+    // }
+
+    // try {
+    //   const data = await s3Client.send(new PutObjectCommand(writeDynamoParams));
+    //   console.log("Success", data);
+    // } catch (err) {
+    //   console.log("Error", err);
+    //   reject(err)
+    // }
+
+    // try {
+    //   const data = await s3Client.send(new PutObjectCommand(postSlackParams));
+    //   console.log("Success", data);
+    // } catch (err) {
+    //   console.log("Error", err);
+    //   reject(err)
+    // }
+
+    // resolve();
   });
 };
-pushToBucket();

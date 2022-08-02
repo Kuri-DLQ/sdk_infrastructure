@@ -8,7 +8,7 @@ import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
 import fs from 'fs-extra'
 
-const REGION = `${process.env.REGION}`;
+const REGION = process.env.REGION
 
 const iam = new IAMClient({ region: REGION });
 
@@ -56,52 +56,46 @@ const sqsPolicyParams = {
   RoleName: ROLE,
 };
 
-const run = async () => {
-  try {
-    const data = await iam.send(new CreateRoleCommand(createParams));
-    console.log("Role ARN is", data.Role.Arn); // successful response
-    fs.appendFile('../../.env', `ROLE_ARN="${data.Role.Arn}"\n`)
-  } catch (err) {
-    console.log("Error when creating role."); // an error occurred
-    throw err;
-  }
-  try {
-    await iam.send(new AttachRolePolicyCommand(lambdaPolicyParams));
-    console.log("AWSLambdaRole policy attached"); // successful response
-  } catch (err) {
-    console.log("Error when attaching Lambda policy to role."); // an error occurred
-    throw err;
-  }
-  try {
-    await iam.send(new AttachRolePolicyCommand(dynamoPolicyParams));
-    console.log("DynamoDB policy attached"); // successful response
-  } catch (err) {
-    console.log("Error when attaching dynamodb policy to role."); // an error occurred
-    throw err;
-  }
-  try {
-    await iam.send(new AttachRolePolicyCommand(s3PolicyParams));
-    console.log("S3 policy attached"); // successful response
-  } catch (err) {
-    console.log("Error when attaching s3 policy to role."); // an error occurred
-    throw err;
-  }
-  try {
-    await iam.send(new AttachRolePolicyCommand(snsPolicyParams));
-    console.log("SNS policy attached"); // successful response
-  } catch (err) {
-    console.log("Error when attaching S3 policy to role."); // an error occurred
-    throw err;
-  }
-  try {
-    await iam.send(new AttachRolePolicyCommand(sqsPolicyParams));
-    console.log("DynamoDB policy attached"); // successful response
-  } catch (err) {
-    console.log("Error when attaching dynamodb policy to role."); // an error occurred
-    throw err;
-  }
+export const createRole = async () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await iam.send(new CreateRoleCommand(createParams));
+      fs.appendFileSync('../sdk_infrastructure/.env', `\nROLE_ARN="${data.Role.Arn}"\n`)
+    } catch (err) {
+      console.log("Error when creating role.");
+      throw err;
+    }
+    try {
+      await iam.send(new AttachRolePolicyCommand(lambdaPolicyParams));
+    } catch (err) {
+      console.log("Error when attaching Lambda policy to role.");
+      throw err;
+    }
+    try {
+      await iam.send(new AttachRolePolicyCommand(dynamoPolicyParams));
+    } catch (err) {
+      console.log("Error when attaching dynamodb policy to role.");
+      throw err;
+    }
+    try {
+      await iam.send(new AttachRolePolicyCommand(s3PolicyParams));
+    } catch (err) {
+      console.log("Error when attaching s3 policy to role.");
+      throw err;
+    }
+    try {
+      await iam.send(new AttachRolePolicyCommand(snsPolicyParams));
+    } catch (err) {
+      console.log("Error when attaching S3 policy to role.");
+      throw err;
+    }
+    try {
+      await iam.send(new AttachRolePolicyCommand(sqsPolicyParams));
+    } catch (err) {
+      console.log("Error when attaching dynamodb policy to role.");
+      throw err;
+    }
+
+    setTimeout(() => resolve(), 10000);
+  })
 };
-
-run();
-
-
