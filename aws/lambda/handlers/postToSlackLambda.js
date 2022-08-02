@@ -15,7 +15,12 @@ const getDayMonthYear = (date) => {
   const minutes = date.getUTCMinutes();
   const seconds = date.getUTCSeconds();
 
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  return `${year}-` +
+`${String(month).length === 1 ? '0' + month : month}-` +
+`${String(day).length === 1 ? '0' + day : day} ` +
+`${String(hours).length === 1 ? '0' + hours : hours}:` +
+`${String(minutes).length === 1 ? '0' + minutes : minutes}:` +
+`${String(seconds).length === 1 ? '0' + seconds : seconds}`
 }
 
 const reformatAttributes = (attributes) => {
@@ -46,29 +51,25 @@ exports.handler = (event, context) => {
       			type: "section",
       			text: {
       			  type: 'mrkdwn',
-      			  text: 'A message has failed to be processed'
-      			}
+      			  text: "From Kuri:\n\n>A message has failed to be processed and was added to the DLQ\n>Please visit the Kuri dashboard to make modifications and resend"
+      			},
+            "accessory": {
+              "type": "image",
+              "image_url": "https://i.postimg.cc/v8PGLdXz/app-icon.png",
+              "alt_text": "kuri logo"
+            }
       		},
           {
             type: 'section',
             fields: [
               {
                 type: 'mrkdwn',
-                text: `*Main Queue:*\nKuriMainQueue`
+                text: `*Main Queue:*\n${process.env.QUEUE_NAME}`
               },
               {
                 type: 'mrkdwn',
-                text: `*Dead Letter Queue:*\nKuriDeadLetterQueue`
+                text: '*Timestamp (UTC):*\n' + getDayMonthYear(new Date(record.Sns.Timestamp))
               },
-            ]
-          },
-          {
-            type: 'section',
-            fields: [
-              {
-                type: 'mrkdwn',
-                text: '*Timestamp:*\n' + getDayMonthYear(new Date(record.Sns.Timestamp))
-              }
             ]
           },
        		{
@@ -87,6 +88,9 @@ exports.handler = (event, context) => {
               }
             ]
           },
+          {
+      			type: "divider"
+      		},
         ]
     };
 
