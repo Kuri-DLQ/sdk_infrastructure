@@ -96,6 +96,6 @@ export const createRole = async () => {
       throw err;
     }
 
-    setTimeout(() => resolve(), 10000);
+    setTimeout(() => resolve(data.Role.Arn), 10000);
   })
 };

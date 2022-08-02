@@ -4,22 +4,14 @@ dotenv.config({path:'../../.env'})
 import { CreateFunctionCommand } from "@aws-sdk/client-lambda";
 import AWS from 'aws-sdk'
 
-function createParams(lambdaFile, bucketName) {
+function createParams(lambdaFile, bucketName, roleArn) {
   const params = {
     Code: {
       S3Bucket: bucketName,
       S3Key: `${lambdaFile}.js.zip`,
     },
     FunctionName: lambdaFile,
-    Role: `${process.env.ROLE_ARN}`,
-    Environment: {
-      Variables: {
-          "SNS_ARN": process.env.SNS_ARN,
-          "TABLE_NAME": process.env.TABLE_NAME,
-          "QUEUE_NAME": process.env.MAIN_QUEUE_NAME,
-          "DLQ_NAME": process.env.DLQ_NAME
-      }
-    },
+    Role: roleArn,
     EphemeralStorage: {
       Size: '512'
     },
