@@ -3,14 +3,14 @@ import dotenv from 'dotenv'
 dotenv.config({path:'../../.env'})
 import { getAccountId } from './awsAccountId.js';
 
-const sns = new AWS.SNS({apiVersion: '2015-03-31', region: process.env.REGION})
-
-export const subscribeToSns = () => {
+export const subscribeToSns = (region) => {
+  const sns = new AWS.SNS({ apiVersion: '2015-03-31', region })
+  
   return new Promise(async (resolve, reject) => {
     const dynamoParams = {
       Protocol: 'lambda',
       TopicArn: process.env.SNS_ARN,
-      Endpoint: `arn:aws:lambda:${process.env.REGION}:${getAccountId()}:function:writeToDynamoLambda`,
+      Endpoint: `arn:aws:lambda:${region}:${getAccountId()}:function:writeToDynamoLambda`,
       ReturnSubscriptionArn: true || false
     };
     
@@ -22,7 +22,7 @@ export const subscribeToSns = () => {
     const slackParams = {
       Protocol: 'lambda',
       TopicArn: process.env.SNS_ARN,
-      Endpoint: `arn:aws:lambda:${process.env.REGION}:${getAccountId()}:function:postToSlackLambda`,
+      Endpoint: `arn:aws:lambda:${region}:${getAccountId()}:function:postToSlackLambda`,
       ReturnSubscriptionArn: true || false
     };
     

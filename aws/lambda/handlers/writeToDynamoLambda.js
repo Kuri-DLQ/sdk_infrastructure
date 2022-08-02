@@ -19,7 +19,6 @@ const handleAttributeType = (attributes) => {
     }
   }
 
-  console.log('AFTER LOOP in handleAttributeType', attributes)
   return attributes
 }
 

@@ -36,11 +36,11 @@ const lambdaFunctions = [
 ]
 
 const retry = false
-export const createLambdas = async (bucketName) => {
+export const createLambdas = async (bucketName, region) => {
   return new Promise(async (resolve, reject) => {
     lambdaFunctions.forEach(async lambdaFunction => {
       try {
-        let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION });
+        let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region });
         await lambda.createFunction(createParams(lambdaFunction, bucketName), (err, data) => {
           if (err) {
             console.log('error', err.stack)
@@ -52,7 +52,7 @@ export const createLambdas = async (bucketName) => {
         // reject(err)
         retry = true
         while (retry) {
-          let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region: process.env.REGION });
+          let lambda = new AWS.Lambda({ apiVersion: '2015-03-31', region });
           await lambda.createFunction(createParams(lambdaFunction), (err, data) => {
             if (err) {
               console.log('error', err.stack)
