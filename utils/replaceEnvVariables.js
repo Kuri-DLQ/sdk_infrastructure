@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config({path:'../sdk_infrastructure/.env'})
 import { getQueueName } from '../aws/sqs/queueName.js'
 
-export const setEnvVariables = (region, slack_path) => {
+export const setEnvVariables = (region, slack_path, mainQueueUrl) => {
   return new Promise((resolve, reject) => {
     async function replaceInFile(filename, regex, replacement) {
       try {
@@ -27,7 +27,7 @@ export const setEnvVariables = (region, slack_path) => {
       await replaceInFile('../sdk_infrastructure/aws/lambda/handlers/writeToDynamoLambda.js', regionRegex, region);
       await replaceInFile('../sdk_infrastructure/aws/lambda/handlers/publishToSnsLambda.js', snsArnRegex, process.env.SNS_ARN);
       await replaceInFile('../sdk_infrastructure/aws/lambda/handlers/postToSlackLambda.js', slackPathRegex, slack_path);
-      await replaceInFile('../sdk_infrastructure/aws/lambda/handlers/postToSlackLambda.js', queueNameRegex, getQueueName(process.env.MAIN_QUEUE_URL));
+      await replaceInFile('../sdk_infrastructure/aws/lambda/handlers/postToSlackLambda.js', queueNameRegex, getQueueName(mainQueueUrl));
     })()
 
     resolve()

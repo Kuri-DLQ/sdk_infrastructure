@@ -10,7 +10,7 @@ export const joinDlqMain = async (mainQueueUrl) => {
         `{"deadLetterTargetArn":"${process.env.DLQ_ARN}",` +
         '"maxReceiveCount":"3"}',
     },
-    QueueUrl: mainQueueUrl || process.env.MAIN_QUEUE_URL,
+    QueueUrl: mainQueueUrl,
   };
 
   return new Promise(async (resolve, reject) => {
