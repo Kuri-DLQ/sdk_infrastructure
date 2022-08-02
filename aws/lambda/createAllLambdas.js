@@ -28,12 +28,12 @@ const lambdaFunctions = [
 ]
 
 const retry = false
-export const createLambdas = async (bucketName, region) => {
+export const createLambdas = async (bucketName, region, roleArn) => {
   return new Promise(async (resolve, reject) => {
     lambdaFunctions.forEach(async lambdaFunction => {
       try {
         let lambda = new AWS.Lambda({apiVersion: '2015-03-31', region });
-        await lambda.createFunction(createParams(lambdaFunction, bucketName), (err, data) => {
+        await lambda.createFunction(createParams(lambdaFunction, bucketName, roleArn), (err, data) => {
           if (err) {
             console.log('error', err.stack)
             reject(err);

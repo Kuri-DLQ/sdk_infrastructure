@@ -58,8 +58,9 @@ const sqsPolicyParams = {
 
 export const createRole = async () => {
   return new Promise(async (resolve, reject) => {
+    let data;
     try {
-      const data = await iam.send(new CreateRoleCommand(createParams));
+      data = await iam.send(new CreateRoleCommand(createParams));
       fs.appendFileSync('../sdk_infrastructure/.env', `\nROLE_ARN="${data.Role.Arn}"\n`)
     } catch (err) {
       console.log("Error when creating role.");
